@@ -1,6 +1,7 @@
 import csv
 import json
 import argparse
+import hashlib
 
 def csv_to_json(csv_file, json_file):
     insights = []
@@ -17,8 +18,12 @@ def csv_to_json(csv_file, json_file):
             explanation = row['EXPLANATION'].strip()
             source = row['SOURCE'].strip()
             
+            # Generate ID based on SHA-256 hash of the explanation
+            id = hashlib.sha256(explanation.encode('utf-8')).hexdigest()
+
             # Create insight dictionary
             insight = {
+                'id': id,
                 'tags': tags,
                 'headline': headline,
                 'explanation': explanation,
